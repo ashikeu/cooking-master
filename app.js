@@ -40,12 +40,13 @@ const getFoodList= ()=> {
 function showDetail(event) {
     const ingradientList = document.getElementById('ingradientList');
     const mealImage = document.getElementById('mealImage');
+    const mealHeader = document.getElementById('mealHeader');
     ingradientList.innerText='';
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${event.currentTarget.innerText}`)
         .then(res=>res.json())
         .then(data=>{ 
-            const foodDetail=data.meals[0];  
-            console.log(foodDetail.strMealThumb);
+            const foodDetail=data.meals[0]; 
+            mealHeader.innerText=foodDetail.strMeal;
             mealImage.src= foodDetail.strMealThumb;
             if(foodDetail.strIngredient1!=""){
                 const li=document.createElement('li');
