@@ -1,22 +1,16 @@
-function getFoodList () {
+const getFoodList= ()=> {
     fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
     .then(res=>res.json())
     .then(data=>displayCategory(data));
 
     const displayCategory= categories=>{
-        const foodContainers=document.getElementById('foodContainer');       
-        while (foodContainers.firstChild) {
-            foodContainers.removeChild(foodContainers.lastChild);
-        }
-        for(let i=0;i<categories.categories.length;i++)
-        {
-            const category=categories.categories[i];
+        const foodContainers=document.getElementById('foodContainer');   
+        foodContainers.innerText='';
+        categories.categories.forEach(category => {
             fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category.strCategory}`)
             .then(res=>res.json())
             .then(data=>{
-                for(let i=0;i<data.meals.length;i++)
-                {
-                    const meal=data.meals[i];
+                data.meals.forEach(meal => {
                     const subString=document.getElementById('foodNameInput');
                     if(meal.strMeal.toLowerCase().includes(subString.value.toLowerCase()))
                     {                    
@@ -33,18 +27,20 @@ function getFoodList () {
                         foodDiv.appendChild(foodName);
                         foodContainers.appendChild(foodDiv);
                     }
-                }
+                });
             });
-            }
+        });
+        for(let i=0;i<categories.categories.length;i++)
+        {
+            
+        }
     }
 }
 
 function showDetail(event) {
     const ingradientList = document.getElementById('ingradientList');
     const mealImage = document.getElementById('mealImage');
-    while (ingradientList.firstChild) {
-        ingradientList.removeChild(ingradientList.lastChild);
-    }
+    ingradientList.innerText='';
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${event.currentTarget.innerText}`)
         .then(res=>res.json())
         .then(data=>{ 
